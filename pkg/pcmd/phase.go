@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow"
 
-	"github.com/suzi1037/pcmd/pkg/cprt"
+	"github.com/suzi1037/phasext/pkg/cprt"
 )
 
 var (

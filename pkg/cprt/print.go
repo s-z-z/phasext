@@ -6,7 +6,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/fatih/color"
-	"github.com/suzi1037/pcmd/pkg/symbol"
+	"github.com/suzi1037/phasext/pkg/symbol"
 	"gopkg.in/yaml.v3"
 	"k8s.io/klog/v2"
 )

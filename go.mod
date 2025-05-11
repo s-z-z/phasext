@@ -1,4 +1,4 @@
-module github.com/suzi1037/pcmd
+module github.com/suzi1037/phasext
 
 go 1.23.0
 

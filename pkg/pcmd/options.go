@@ -6,7 +6,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	"github.com/suzi1037/pcmd/pkg/pcmd/util"
+	"github.com/suzi1037/phasext/pkg/pcmd/util"
 )
 
 // WithData 绑定数据
