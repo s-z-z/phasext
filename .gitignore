@@ -1,0 +1,5 @@
+.idea/
+test/private/
+bin/
+.DS_Store
+*.log
