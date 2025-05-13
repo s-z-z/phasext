@@ -7,12 +7,6 @@ import (
 
 type RunnerDataInitializer func(cmd *cobra.Command, args []string) (workflow.RunData, error)
 
-func SimpleDataInitializer(c workflow.RunData) RunnerDataInitializer {
-	return func(cmd *cobra.Command, args []string) (workflow.RunData, error) {
-		return c, nil
-	}
-}
-
-func SetSimpleDataInitializer(r *workflow.Runner, c workflow.RunData) {
-	r.SetDataInitializer(SimpleDataInitializer(c))
+func OnlyArgsDataInitializer(cmd *cobra.Command, args []string) (workflow.RunData, error) {
+	return args, nil
 }

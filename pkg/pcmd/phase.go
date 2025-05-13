@@ -1,20 +1,17 @@
 package pcmd
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-
 	"github.com/pkg/errors"
 	"k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow"
-
-	"github.com/suzi1037/phasext/pkg/cprt"
 )
 
 var (
 	ErrUserAbort = errors.New("won't proceed; the user didn't answer (Y|y) in order to continue")
 )
+
+type PhaseInterface interface {
+	convert2workflowPhase() workflow.Phase
+}
 
 type Phase struct {
 	// name of the phase.
@@ -43,8 +40,14 @@ type Phase struct {
 	// Nb. phase marked as RunAllSiblings can not have Run functions
 	RunAllSiblings bool
 
-	// Run 封装
+	// Run: 优先级RunArgs>RunAny>Run
 	Run func() error
+
+	// RunAny: 优先级RunArgs>RunAny>Run
+	RunAny func(initializerData any) error
+
+	// RunArgs: 优先级RunArgs>RunAny>Run
+	RunArgs func(args []string) error
 
 	// InheritFlags defines the list of flags that the cobra command generated for this phase should Inherit
 	// from local flags defined in the parent command / or additional flags defined in the phase runner.
@@ -54,9 +57,6 @@ type Phase struct {
 
 	// Dependencies is a list of phases that the specific phase depends on.
 	Dependencies []string
-
-	// DONTADD_PHASE
-	DontAdd bool
 }
 
 func (p Phase) convert2workflowPhase() workflow.Phase {
@@ -68,56 +68,20 @@ func (p Phase) convert2workflowPhase() workflow.Phase {
 		Example:        p.Example,
 		Hidden:         p.Hidden,
 		RunAllSiblings: p.RunAllSiblings,
-		Run: func(data workflow.RunData) error {
+		Run: func(initializerData workflow.RunData) error {
+			if p.RunArgs != nil {
+				s, ok := initializerData.([]string)
+				if !ok {
+					return errors.New("convert2workflowPhase:invalid data type, expected []string")
+				}
+				return p.RunArgs(s)
+			}
+			if p.RunAny != nil {
+				return p.RunAny(initializerData)
+			}
 			return p.Run()
 		},
 		InheritFlags: p.InheritFlags,
 		Dependencies: p.Dependencies,
 	}
-}
-
-func NewPhaseSpew(o any) Phase {
-	return Phase{
-		Name:   "print",
-		Short:  "print config",
-		Hidden: true,
-		Run: func() error {
-			cprt.SpewInfo(o)
-			return nil
-		},
-	}
-}
-
-func NewPhaseRawfn(run func() error) Phase {
-	return Phase{
-		Name:   "_rawfn",
-		Hidden: true,
-		Run:    run,
-	}
-}
-
-func NewPhaseConfirm() Phase {
-	return Phase{
-		Name:   "_confirm",
-		Hidden: true,
-		Run: func() error {
-			return InteractivelyConfirmAction("Are you sure you want to proceed?")
-		},
-	}
-}
-
-func InteractivelyConfirmAction(question string) error {
-	fmt.Printf("%s [y/N]: ", question)
-	r := os.Stdin
-	scanner := bufio.NewScanner(r)
-	scanner.Scan()
-	if err := scanner.Err(); err != nil {
-		return errors.Wrap(err, "couldn't read from standard input")
-	}
-	answer := scanner.Text()
-	if strings.EqualFold(answer, "y") || strings.EqualFold(answer, "yes") {
-		return nil
-	}
-
-	return ErrUserAbort
 }

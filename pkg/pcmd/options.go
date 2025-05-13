@@ -37,6 +37,17 @@ func WithConfig() Option {
 	return WithConfigSpecFlag("")
 }
 
+// WithSpecConfigPath 支持配置文件参数，指定configSpecPath
+func WithSpecConfigPath(configPath string) Option {
+	return func(p *PhasesCmd) {
+		if p.withConfig {
+			klog.Fatalf("WithConfig: can only be called once")
+		}
+		p.withConfig = true
+		p.configPath = configPath
+	}
+}
+
 func WithConfirm() Option {
 	return func(p *PhasesCmd) {
 		p.withConfirm = true
@@ -138,7 +149,7 @@ func WithoutValidate() Option {
 func WithPreRun(p1, p2 func(cmd *cobra.Command, args []string) error) Option {
 	return func(p *PhasesCmd) {
 		p.preRunE1 = p1
-		p.preRunE1 = p2
+		p.preRunE2 = p2
 	}
 }
 

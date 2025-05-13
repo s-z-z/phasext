@@ -152,7 +152,7 @@ func newPhasesCmd(prop CmdProp, opts ...Option) *PhasesCmd {
 
 func (p *PhasesCmd) init() {
 
-	if p.withConfig {
+	if p.withConfig && p.configPath == "" {
 		util.AddConfigFlag(p.cmd, p.configFlag, &p.configPath)
 	}
 
@@ -176,7 +176,7 @@ func (p *PhasesCmd) finalize() {
 
 	// runner数据初始化: 返回Data
 	if p.runnerDataInitializer == nil {
-		util.SetSimpleDataInitializer(p.Runner, p.data)
+		p.Runner.SetDataInitializer(util.OnlyArgsDataInitializer)
 	}
 
 	// 支持Phase
@@ -413,11 +413,8 @@ func (p *PhasesCmd) AppendPhases(phases ...workflow.Phase) {
 }
 
 // AppendPcmdPhases 添加pcmd.Phase: 不需要断言
-func (p *PhasesCmd) AppendPcmdPhases(phases ...Phase) {
+func (p *PhasesCmd) AppendPcmdPhases(phases ...PhaseInterface) {
 	for _, phase := range phases {
-		if phase.DontAdd {
-			continue
-		}
 		p.AppendPhases(phase.convert2workflowPhase())
 	}
 }
