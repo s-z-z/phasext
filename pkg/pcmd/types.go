@@ -15,6 +15,8 @@ const (
 	DefaultConfigWriteBack = false
 )
 
+type CobraRun func(cmd *cobra.Command, args []string) error
+
 type WareHouse interface {
 	schema.ObjectKind
 	runtime.Object

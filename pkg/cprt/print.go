@@ -6,9 +6,10 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/fatih/color"
-	"github.com/suzi1037/phasext/pkg/symbol"
 	"gopkg.in/yaml.v3"
 	"k8s.io/klog/v2"
+
+	"github.com/suzi1037/phasext/pkg/symbol"
 )
 
 func Green(format string, a ...interface{}) string {
@@ -35,6 +36,10 @@ func Debug(format string, a ...interface{}) {
 	klog.Infoln(Magenta(format, a...))
 }
 
+func Flag(a interface{}) {
+	klog.Infoln(Magenta("##### %s #####", a))
+}
+
 func Info(format string, a ...interface{}) {
 	klog.Infoln(Blue(format, a...))
 }
@@ -58,15 +63,23 @@ func PhaseOK() {
 	Ok("%s  ", symbol.OK)
 }
 func PhaseOKStr(s string) {
-	Ok("%s %s  ", s, symbol.OK)
+	Ok("%s   %s", symbol.OK, s)
 }
 
 func PhaseWarning() {
 	Warning("%s  ", symbol.WARN)
 }
 
+func PhaseWarningStr(s string) {
+	Warning("%s   %s", symbol.WARN, s)
+}
+
 func PhaseError() {
 	Error("%s  ", symbol.Error)
+}
+
+func PhaseErrorStr(s string) {
+	Error("%s   %s", symbol.Error, s)
 }
 
 func PhaseEmoj(format string, a ...interface{}) {

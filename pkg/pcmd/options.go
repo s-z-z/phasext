@@ -146,14 +146,14 @@ func WithoutValidate() Option {
 	}
 }
 
-func WithPreRun(p1, p2 func(cmd *cobra.Command, args []string) error) Option {
+func WithPreRun(p1, p2 CobraRun) Option {
 	return func(p *PhasesCmd) {
 		p.preRunE1 = p1
 		p.preRunE2 = p2
 	}
 }
 
-func WithPostRun(p1, p2 func(cmd *cobra.Command, args []string) error) Option {
+func WithPostRun(p1, p2 CobraRun) Option {
 	return func(p *PhasesCmd) {
 		p.postRunE1 = p1
 		p.postRunE2 = p2

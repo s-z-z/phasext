@@ -70,13 +70,13 @@ type PhasesCmd struct {
 	shouldValidate         bool
 	viper                  *viper.Viper
 	// preRunE1 load data前执行
-	preRunE1 func(cmd *cobra.Command, args []string) error
+	preRunE1 CobraRun
 	// preRunE2 load data后执行
-	preRunE2 func(cmd *cobra.Command, args []string) error
+	preRunE2 CobraRun
 	// postRunE1 writeback data前执行
-	postRunE1 func(cmd *cobra.Command, args []string) error
+	postRunE1 CobraRun
 	// postRunE2 writeback data后执行
-	postRunE2 func(cmd *cobra.Command, args []string) error
+	postRunE2 CobraRun
 }
 
 func newPhaseCmdByProp(prop CmdProp) *PhasesCmd {
@@ -129,10 +129,6 @@ func newPhasesCmd(prop CmdProp, opts ...Option) *PhasesCmd {
 			klog.Fatalf("pcmd:New: If no WithData, can not set WithConfig or WithExportOverrideFlags")
 		}
 	} else {
-		if !p.withConfig && !p.exportOverrideFlags {
-			klog.Fatalf("pcmd:New: If WithData, (WithConfig or WithExportOverrideFlags) must be set at least one")
-		}
-
 		gvk, err := GetGVKByObject(p.scheme, p.data)
 		if err != nil {
 			klog.Fatalf("pcmd:New: %s", err)
@@ -258,13 +254,13 @@ func (p *PhasesCmd) documentToDataPersistentPreRun() {
 			}
 		}
 
-		// go validate
-		if err := p.toValidate(); err != nil {
+		// init
+		if err := p.dataInit(); err != nil {
 			return err
 		}
 
-		// init
-		if err := p.dataInit(); err != nil {
+		// go validate
+		if err := p.toValidate(); err != nil {
 			return err
 		}
 
@@ -371,7 +367,7 @@ func (p *PhasesCmd) GetDataYaml() ([]byte, error) {
 //
 //	p1: load data前执行
 //	p2: load data后执行
-func (p *PhasesCmd) SetPreRun(p1, p2 func(cmd *cobra.Command, args []string) error) {
+func (p *PhasesCmd) SetPreRun(p1, p2 CobraRun) {
 	p.preRunE1 = p1
 	p.preRunE2 = p2
 }
@@ -380,7 +376,7 @@ func (p *PhasesCmd) SetPreRun(p1, p2 func(cmd *cobra.Command, args []string) err
 //
 //	p1: writeback data前执行
 //	p2: writeback data后执行
-func (p *PhasesCmd) SetPostRun(p1, p2 func(cmd *cobra.Command, args []string) error) {
+func (p *PhasesCmd) SetPostRun(p1, p2 CobraRun) {
 	p.postRunE1 = p1
 	p.postRunE2 = p2
 }

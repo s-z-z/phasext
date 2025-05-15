@@ -201,3 +201,19 @@ func WriteBackFile(configPath string, parser kubeadm.DocumentMap, codec serializ
 	}
 	return nil
 }
+
+func FileFillWareHouse(scheme *runtime.Scheme, configPath string, data WareHouse) error {
+	documentParser, err := File2DocumentParser(configPath, scheme)
+	if err != nil {
+		return errors.Wrapf(err, "pcmd:parse:File2WareHouse:File2DocumentParser: %s", configPath)
+	}
+	reader, err := documentParser.Reader(OnlyUnmarshalSelf(data))
+	if err != nil {
+		return errors.Wrapf(err, "pcmd:parse:File2WareHouse:Reader: %s", configPath)
+	}
+	v := viper.New()
+	if err := ReaderFillData(v, reader, data); err != nil {
+		return errors.Wrapf(err, "pcmd:parse:File2WareHouse:ReaderFillData： %s", configPath)
+	}
+	return nil
+}
