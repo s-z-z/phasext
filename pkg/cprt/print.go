@@ -59,6 +59,15 @@ func PhaseTitle(title string, a ...interface{}) {
 	klog.Infof("%s %s\n", prefix, Blue(title))
 }
 
+func PhaseResult(err error, format string, a ...interface{}) {
+	result := fmt.Sprintf(format, a...)
+	if err == nil {
+		PhaseOKStr(result)
+	} else {
+		PhaseErrorStr(result)
+	}
+}
+
 func PhaseOK() {
 	Ok("%s  ", symbol.OK)
 }
