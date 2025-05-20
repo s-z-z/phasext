@@ -99,6 +99,10 @@ func setSingleNodeValue(node *yaml.Node, value any) error {
 		node.Kind = yaml.ScalarNode
 		node.Tag = "!!str"
 		node.Value = v
+	case bool:
+		node.Kind = yaml.ScalarNode
+		node.Tag = "!!bool"
+		node.Value = fmt.Sprintf("%t", v)
 	case []string:
 		node.Kind = yaml.SequenceNode
 		node.Tag = "!!seq"
