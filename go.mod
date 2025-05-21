@@ -7,6 +7,7 @@ toolchain go1.23.6
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/fatih/color v1.13.0
+	github.com/go-ini/ini v1.67.0
 	github.com/go-playground/validator/v10 v10.23.0
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.47.0
