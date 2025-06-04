@@ -119,13 +119,13 @@ func File2DocumentParser(configPath string, scheme *runtime.Scheme) (*DocumentPa
 	return documentParser, err
 }
 
-func ReaderFillData(viper *viper.Viper, reader io.Reader, o interface{}) error {
-	viper.SetConfigType("yaml")
-	if err := viper.ReadConfig(reader); err != nil {
+func ReaderFillData(v *viper.Viper, reader io.Reader, o interface{}) error {
+	v.SetConfigType("yaml")
+	if err := v.ReadConfig(reader); err != nil {
 		return errors.Wrap(err, "pcmd:parse:ReaderFillData:ReadConfig")
 	}
 
-	if err := viper.Unmarshal(o); err != nil {
+	if err := v.Unmarshal(o); err != nil {
 		return errors.Wrap(err, "pcmd:parse:ReaderFillData:Unmarshal")
 	}
 	return nil
@@ -202,7 +202,7 @@ func WriteBackFile(configPath string, parser kubeadm.DocumentMap, codec serializ
 	return nil
 }
 
-func FileFillWareHouse(scheme *runtime.Scheme, configPath string, data WareHouse) error {
+func FileFillWareHouse(scheme *runtime.Scheme, configPath string, data WareHouse, vFn func(*viper.Viper)) error {
 	documentParser, err := File2DocumentParser(configPath, scheme)
 	if err != nil {
 		return errors.Wrapf(err, "pcmd:parse:File2WareHouse:File2DocumentParser: %s", configPath)
@@ -212,6 +212,9 @@ func FileFillWareHouse(scheme *runtime.Scheme, configPath string, data WareHouse
 		return errors.Wrapf(err, "pcmd:parse:File2WareHouse:Reader: %s", configPath)
 	}
 	v := viper.New()
+	if vFn != nil {
+		vFn(v)
+	}
 	if err := ReaderFillData(v, reader, data); err != nil {
 		return errors.Wrapf(err, "pcmd:parse:File2WareHouse:ReaderFillData： %s", configPath)
 	}

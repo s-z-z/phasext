@@ -69,6 +69,7 @@ type PhasesCmd struct {
 	v                      *validator.Validate
 	shouldValidate         bool
 	viper                  *viper.Viper
+	viperFn                func(*viper.Viper)
 	// preRunE1 load data前执行
 	preRunE1 CobraRun
 	// preRunE2 load data后执行
@@ -165,6 +166,10 @@ func (p *PhasesCmd) init() {
 	}
 	p._exportOverrideFlags(flagKind)
 	p._exportExtraFlags(flagKind)
+
+	if p.viperFn != nil {
+		p.viperFn(p.viper)
+	}
 }
 
 func (p *PhasesCmd) finalize() {

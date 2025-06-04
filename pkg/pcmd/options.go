@@ -3,6 +3,7 @@ package pcmd
 import (
 	validator "github.com/go-playground/validator/v10"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
@@ -76,6 +77,12 @@ func WithExportOverrideFlags(specIncludes ...string) Option {
 	return func(p *PhasesCmd) {
 		p.exportOverrideFlags = true
 		p.specExportIncludeFlags = specIncludes
+	}
+}
+
+func WithViperFn(vfn func(v *viper.Viper)) Option {
+	return func(p *PhasesCmd) {
+		p.viperFn = vfn
 	}
 }
 
