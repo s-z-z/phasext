@@ -1,7 +1,6 @@
 package pcmd
 
 import (
-	"github.com/go-playground/validator/v10"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -20,7 +19,6 @@ type CobraRun func(cmd *cobra.Command, args []string) error
 type WareHouse interface {
 	schema.ObjectKind
 	runtime.Object
-	ValidateStruct(v *validator.Validate) error
 }
 
 type HasInit interface {

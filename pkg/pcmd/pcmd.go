@@ -293,7 +293,7 @@ func (p *PhasesCmd) toValidate() error {
 	}
 
 	if p.data != nil {
-		if err := p.data.ValidateStruct(p.v); err != nil {
+		if err := p.v.Struct(p.data); err != nil {
 			return err
 		}
 
