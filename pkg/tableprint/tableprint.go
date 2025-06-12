@@ -33,5 +33,11 @@ func Print[T any](header []any, records []T, rowFormat func(r any) []any) {
 		t.AppendRow(rowFormat(r))
 	}
 	t.SetStyle(table.StyleLight)
+	t.Style().Options.SeparateRows = true
+	//t.SetStyle(table.Style{
+	//	Name:   "CustomStyle",
+	//	Box:    table.StyleBoxDefault,
+	//	Format: table.FormatOptionsDefault,
+	//})
 	t.Render()
 }
