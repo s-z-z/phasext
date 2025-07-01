@@ -105,9 +105,12 @@ func WithPersistentExportedFlag() Option {
 //	name: flag name
 //	usage: flag usage
 //	v: 传入指针
-func WithExtraFlagStruct(v any) Option {
+func WithExtraFlagStruct(v any, specIncludes ...string) Option {
 	return func(p *PhasesCmd) {
 		p.extraFlagStructs = append(p.extraFlagStructs, v)
+		if len(specIncludes) > 0 {
+			p.specExtraExportIncludeFlags = append(p.specExtraExportIncludeFlags, specIncludes...)
+		}
 	}
 }
 

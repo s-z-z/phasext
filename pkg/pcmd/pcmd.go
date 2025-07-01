@@ -46,30 +46,31 @@ func NewPhaseCmdFactory(s *runtime.Scheme, v *validator.Validate) *PhaseCmdFacto
 }
 
 type PhasesCmd struct {
-	cmd                    *cobra.Command
-	Runner                 *workflow.Runner
-	data                   WareHouse
-	gvk                    schema.GroupVersionKind
-	firstAppend            bool
-	withConfirm            bool
-	withConfig             bool
-	configFlag             string
-	configPath             string
-	scheme                 *runtime.Scheme
-	documentParser2Reader  DocumentParser2Redaer
-	documentParser         *DocumentParser
-	runnerDataInitializer  util.RunnerDataInitializer
-	exportOverrideFlags    bool
-	specExportIncludeFlags []string
-	persistentExportedFlag bool
-	extraFlagStructs       []any
-	bindToCommand          bool
-	finished               bool
-	configWriteBack        bool
-	v                      *validator.Validate
-	shouldValidate         bool
-	viper                  *viper.Viper
-	viperFn                func(*viper.Viper)
+	cmd                         *cobra.Command
+	Runner                      *workflow.Runner
+	data                        WareHouse
+	gvk                         schema.GroupVersionKind
+	firstAppend                 bool
+	withConfirm                 bool
+	withConfig                  bool
+	configFlag                  string
+	configPath                  string
+	scheme                      *runtime.Scheme
+	documentParser2Reader       DocumentParser2Redaer
+	documentParser              *DocumentParser
+	runnerDataInitializer       util.RunnerDataInitializer
+	exportOverrideFlags         bool
+	specExportIncludeFlags      []string
+	persistentExportedFlag      bool
+	extraFlagStructs            []any
+	specExtraExportIncludeFlags []string
+	bindToCommand               bool
+	finished                    bool
+	configWriteBack             bool
+	v                           *validator.Validate
+	shouldValidate              bool
+	viper                       *viper.Viper
+	viperFn                     func(*viper.Viper)
 	// preRunE1 load data前执行
 	preRunE1 CobraRun
 	// preRunE2 load data后执行
@@ -203,7 +204,7 @@ func (p *PhasesCmd) _exportOverrideFlags(flagKind util.FlagKind) {
 
 func (p *PhasesCmd) _exportExtraFlags(flagKind util.FlagKind) {
 	for _, v := range p.extraFlagStructs {
-		util.AddExportFlags(p.cmd, v, []string{}, flagKind, true)
+		util.AddExportFlags(p.cmd, v, p.specExtraExportIncludeFlags, flagKind, true)
 	}
 }
 

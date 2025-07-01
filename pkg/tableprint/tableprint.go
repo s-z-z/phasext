@@ -41,3 +41,8 @@ func Print[T any](header []any, records []T, rowFormat func(r any) []any) {
 	//})
 	t.Render()
 }
+
+func JustSelf(r any) []any {
+	r0 := r.([]any)
+	return r0
+}

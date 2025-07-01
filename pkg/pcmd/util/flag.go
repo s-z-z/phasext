@@ -72,7 +72,7 @@ func getExportFields(o interface{}) ([]FieldProp, error) {
 func parseExportTag(s string) ExportProp {
 	var ret ExportProp
 	s = strings.TrimSpace(s)
-	props := strings.Split(s, ",")
+	props := strings.Split(s, "|")
 	propsMap := make(map[string]bool, len(props))
 	for _, p := range props {
 		propsMap[p] = true
