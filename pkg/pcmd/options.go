@@ -156,10 +156,11 @@ func WithoutValidate() Option {
 	}
 }
 
-func WithPreRun(p1, p2 CobraRun) Option {
+func WithPreRun(p1, p2, p3 CobraRun) Option {
 	return func(p *PhasesCmd) {
 		p.preRunE1 = p1
 		p.preRunE2 = p2
+		p.preRunE3 = p3
 	}
 }
 

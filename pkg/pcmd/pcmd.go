@@ -75,6 +75,8 @@ type PhasesCmd struct {
 	preRunE1 CobraRun
 	// preRunE2 load data后执行
 	preRunE2 CobraRun
+	// preRunE3 Init+Validate后执行
+	preRunE3 CobraRun
 	// postRunE1 writeback data前执行
 	postRunE1 CobraRun
 	// postRunE2 writeback data后执行
@@ -270,6 +272,12 @@ func (p *PhasesCmd) documentToDataPersistentPreRun() {
 			return err
 		}
 
+		if p.preRunE3 != nil {
+			if err := p.preRunE3(cmd, args); err != nil {
+				return err
+			}
+		}
+
 		if originPersistentPreRunE != nil {
 			return originPersistentPreRunE(cmd, args)
 		}
@@ -373,9 +381,10 @@ func (p *PhasesCmd) GetDataYaml() ([]byte, error) {
 //
 //	p1: load data前执行
 //	p2: load data后执行
-func (p *PhasesCmd) SetPreRun(p1, p2 CobraRun) {
+func (p *PhasesCmd) SetPreRun(p1, p2, p3 CobraRun) {
 	p.preRunE1 = p1
 	p.preRunE2 = p2
+	p.preRunE3 = p3
 }
 
 // SetPostRun
