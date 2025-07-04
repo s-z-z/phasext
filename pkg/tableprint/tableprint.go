@@ -25,9 +25,13 @@ func Print0[T any](header []string, records []T, rowFormat func(r any) []any, op
 	_ = _table.Render()
 }
 
-func Print[T any](header []any, records []T, rowFormat func(r any) []any) {
+func Print[T any](header []any, records []T, rowFormat func(r any) []any, tFn func(table.Writer)) string {
 	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
+	if tFn != nil {
+		tFn(t)
+	} else {
+		t.SetOutputMirror(os.Stdout)
+	}
 	t.AppendHeader(header)
 	for _, r := range records {
 		t.AppendRow(rowFormat(r))
@@ -39,7 +43,7 @@ func Print[T any](header []any, records []T, rowFormat func(r any) []any) {
 	//	Box:    table.StyleBoxDefault,
 	//	Format: table.FormatOptionsDefault,
 	//})
-	t.Render()
+	return t.Render()
 }
 
 func JustSelf(r any) []any {
