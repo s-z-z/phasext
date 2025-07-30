@@ -9,7 +9,7 @@ import (
 	"gopkg.in/yaml.v3"
 	"k8s.io/klog/v2"
 
-	"github.com/suzi1037/phasext/pkg/symbol"
+	"github.com/s-z-z/phasext/pkg/symbol"
 )
 
 func Green(format string, a ...interface{}) string {

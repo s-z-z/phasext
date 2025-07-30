@@ -1,4 +1,4 @@
-module github.com/suzi1037/phasext
+module github.com/s-z-z/phasext
 
 go 1.23.0
 

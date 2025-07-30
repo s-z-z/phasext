@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/suzi1037/phasext/pkg/grpctry"
+	"github.com/s-z-z/phasext/pkg/grpctry"
 )
 
 func main() {

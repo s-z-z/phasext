@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/suzi1037/phasext/pkg/grpclb"
+	"github.com/s-z-z/phasext/pkg/grpclb"
 )
 
 func main() {

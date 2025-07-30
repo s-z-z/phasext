@@ -17,8 +17,8 @@ import (
 	"k8s.io/klog/v2"
 	"k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow"
 
-	"github.com/suzi1037/phasext/pkg/pcmd/util"
-	util2 "github.com/suzi1037/phasext/pkg/util"
+	"github.com/s-z-z/phasext/pkg/pcmd/util"
+	util2 "github.com/s-z-z/phasext/pkg/util"
 )
 
 type PhaseCmdFactory struct {
