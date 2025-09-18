@@ -8,7 +8,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/s-z-z/phasext/pkg/cprt"
+	"github.com/s-z-z/box/cprt"
 )
 
 func NewPhaseSpew(o any) PhaseInterface {

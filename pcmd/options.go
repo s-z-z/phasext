@@ -1,13 +1,13 @@
 package pcmd
 
 import (
-	validator "github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 
-	"github.com/s-z-z/phasext/pkg/pcmd/util"
+	"github.com/s-z-z/phasext/util"
 )
 
 // WithData 绑定数据

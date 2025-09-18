@@ -2,7 +2,8 @@ package pcmd
 
 import (
 	"github.com/pkg/errors"
-	"k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow"
+
+	"github.com/s-z-z/phasext/workflow"
 )
 
 var (

@@ -4,7 +4,8 @@ import (
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow"
+
+	"github.com/s-z-z/phasext/workflow"
 )
 
 const (
@@ -13,6 +14,8 @@ const (
 	DefaultGoValidate      = true
 	DefaultConfigWriteBack = false
 )
+
+type DocumentMap map[schema.GroupVersionKind][]byte
 
 type CobraRun func(cmd *cobra.Command, args []string) error
 

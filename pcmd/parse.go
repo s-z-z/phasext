@@ -6,22 +6,19 @@ import (
 	"os"
 	"strings"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
-	"k8s.io/apimachinery/pkg/runtime/serializer"
-	"k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm"
-
-	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/klog/v2"
-	"k8s.io/kubernetes/cmd/kubeadm/app/componentconfigs"
-	kubeadmutil "k8s.io/kubernetes/cmd/kubeadm/app/util"
-	"k8s.io/kubernetes/cmd/kubeadm/app/util/config/strict"
+
+	"github.com/s-z-z/phasext/util"
 )
 
 type DocumentParser struct {
-	Dp     kubeadm.DocumentMap
+	Dp     DocumentMap
 	scheme *runtime.Scheme
 }
 
@@ -36,15 +33,15 @@ func NewDocumentParser(fpath string, scheme *runtime.Scheme) (*DocumentParser, e
 	//cprt.Debug("NewDocumentParser: %s", allBytes)
 
 	// 分割yaml对象, 不允许有重复对象
-	gvk2b, err := kubeadmutil.SplitYAMLDocuments(allBytes)
+	gvk2b, err := util.SplitYAMLDocuments(allBytes)
 	if err != nil {
 		return nil, errors.Wrap(err, "NewDocumentParser:SplitYAMLDocuments: split yaml document error")
 	}
 
 	// 校验版本和字段
 	for gvk, b := range gvk2b {
-		if err := strict.VerifyUnmarshalStrict(
-			[]*runtime.Scheme{scheme, componentconfigs.Scheme}, gvk, b); err != nil {
+		if err := util.VerifyUnmarshalStrict(
+			[]*runtime.Scheme{scheme}, gvk, b); err != nil {
 			return nil, errors.Wrap(err, "NewDocumentParser:VerifyUnmarshalStrict: verify unmarshal strict error")
 		}
 	}
@@ -163,7 +160,7 @@ func JsonToYaml(jsonData []byte) ([]byte, error) {
 	return b, nil
 }
 
-func RepalceDocument(parser kubeadm.DocumentMap, codec serializer.CodecFactory, o WareHouse, gvk schema.GroupVersionKind) (string, error) {
+func RepalceDocument(parser DocumentMap, codec serializer.CodecFactory, o WareHouse, gvk schema.GroupVersionKind) (string, error) {
 	var yamls []string
 	for gvkI, b := range parser {
 		if gvkI == gvk {
@@ -178,7 +175,7 @@ func RepalceDocument(parser kubeadm.DocumentMap, codec serializer.CodecFactory, 
 	return strings.Join(yamls, "---\n"), nil
 }
 
-func WriteBackFile(configPath string, parser kubeadm.DocumentMap, codec serializer.CodecFactory, o WareHouse, gvk schema.GroupVersionKind) error {
+func WriteBackFile(configPath string, parser DocumentMap, codec serializer.CodecFactory, o WareHouse, gvk schema.GroupVersionKind) error {
 
 	data, err := RepalceDocument(parser, codec, o, gvk)
 	if err != nil {
