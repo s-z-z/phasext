@@ -1,13 +1,13 @@
 module github.com/s-z-z/phasext
 
-go 1.24.0
+go 1.23.0
 
-toolchain go1.24.2
+toolchain go1.23.8
 
 require (
 	github.com/go-playground/validator/v10 v10.27.0
 	github.com/pkg/errors v0.9.1
-	github.com/s-z-z/box v0.0.6
+	github.com/s-z-z/box v0.0.7
 	github.com/samber/lo v1.51.0
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
