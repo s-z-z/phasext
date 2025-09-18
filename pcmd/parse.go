@@ -13,8 +13,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/klog/v2"
-
-	"github.com/s-z-z/phasext/util"
 )
 
 type DocumentParser struct {
@@ -33,14 +31,14 @@ func NewDocumentParser(fpath string, scheme *runtime.Scheme) (*DocumentParser, e
 	//cprt.Debug("NewDocumentParser: %s", allBytes)
 
 	// 分割yaml对象, 不允许有重复对象
-	gvk2b, err := util.SplitYAMLDocuments(allBytes)
+	gvk2b, err := SplitYAMLDocuments(allBytes)
 	if err != nil {
 		return nil, errors.Wrap(err, "NewDocumentParser:SplitYAMLDocuments: split yaml document error")
 	}
 
 	// 校验版本和字段
 	for gvk, b := range gvk2b {
-		if err := util.VerifyUnmarshalStrict(
+		if err := VerifyUnmarshalStrict(
 			[]*runtime.Scheme{scheme}, gvk, b); err != nil {
 			return nil, errors.Wrap(err, "NewDocumentParser:VerifyUnmarshalStrict: verify unmarshal strict error")
 		}

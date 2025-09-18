@@ -16,7 +16,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	"k8s.io/klog/v2"
 
-	util2 "github.com/s-z-z/box/util"
+	boxutil "github.com/s-z-z/box/util"
 
 	"github.com/s-z-z/phasext/util"
 	"github.com/s-z-z/phasext/workflow"
@@ -231,7 +231,7 @@ func (p *PhasesCmd) documentToDataPersistentPreRun() {
 		}
 
 		if p.withConfig {
-			p.configPath = util2.GetAbsolutePath(p.configPath)
+			p.configPath = boxutil.GetAbsolutePath(p.configPath)
 			klog.V(1).Infof("read config from: %s", p.configPath)
 		} else {
 			p.configPath = ""

@@ -1,4 +1,4 @@
-package util
+package pcmd
 
 import (
 	"bufio"
@@ -12,12 +12,10 @@ import (
 	yamlserializer "k8s.io/apimachinery/pkg/runtime/serializer/yaml"
 	errorsutil "k8s.io/apimachinery/pkg/util/errors"
 	utilyaml "k8s.io/apimachinery/pkg/util/yaml"
-
-	"github.com/s-z-z/phasext/pcmd"
 )
 
-func SplitYAMLDocuments(yamlBytes []byte) (pcmd.DocumentMap, error) {
-	gvkmap := pcmd.DocumentMap{}
+func SplitYAMLDocuments(yamlBytes []byte) (DocumentMap, error) {
+	gvkmap := DocumentMap{}
 	knownKinds := map[string]bool{}
 	errs := []error{}
 	buf := bytes.NewBuffer(yamlBytes)
